@@ -1,5 +1,7 @@
-var client = require('./keys.js');
+var client = require('./keys');
 var twitter = require('twitter');
+var twitterClient = new twitter(client);
+var params = {q: 'inClassProject', count:20};
 var spotify = require('spotify');
 var request = require('request');
 var fs = require('fs');
@@ -7,10 +9,15 @@ var argvArray = process.argv;
 var command = process.argv[2];
 var title = argvArray.slice(3);
 var titleJoined = title.join(" ");
-var toAppend = command +" " + titleJoined + ",";
+var toAppend = command +" " + titleJoined + ","; 
 
 	if(command == 'my-tweets'){
-			//DO DIS TOMORROW 
+		twitterClient.get('search/tweets', params, function(error, data, response){
+    var tweets = data.statuses;
+    for (var i = 0; i<20; i++) {
+        console.log("Tweet" + i + ":" +tweets[i].text);
+    }
+	});
 	}
 	else if(command =='spotify-this-song'){
 		if(titleJoined === ''){
@@ -21,10 +28,10 @@ var toAppend = command +" " + titleJoined + ",";
         console.log('Error occurred: ' + err);
         return;
     	}else{
-    	console.log(JSON.stringify(data.tracks.items[0].artists[0].name,null,3));
-    	console.log(JSON.stringify(data.tracks.items[0].name,null,3));
-    	console.log(JSON.stringify(data.tracks.items[0].preview_url,null,3));
-    	console.log(JSON.stringify(data.tracks.items[0].album.name,null,3));
+    	console.log("Artist:" + JSON.stringify(data.tracks.items[0].artists[0].name,null,3));
+    	console.log("Song Name:" + JSON.stringify(data.tracks.items[0].name,null,3));
+    	console.log("Preview Link:" + JSON.stringify(data.tracks.items[0].preview_url,null,3));
+    	console.log("Album Name:" + JSON.stringify(data.tracks.items[0].album.name,null,3));
     	}
 		});		
 	}
@@ -52,26 +59,32 @@ var toAppend = command +" " + titleJoined + ",";
 		if(error) {
 		return console.log(error);
 		}else{
-			titleJoined = data;
-			spotify.search({ type: 'track', query: titleJoined }, function(err, data){
-    		if(err){
-       		 console.log('Error occurred: ' + err);
-        	return;
-    		}else{
-    		console.log(JSON.stringify(data.tracks.items[0].artists[0].name,null,3));
-    		console.log(JSON.stringify(data.tracks.items[0].name,null,3));
-    		console.log(JSON.stringify(data.tracks.items[0].preview_url,null,3));
-    		console.log(JSON.stringify(data.tracks.items[0].album.name,null,3));
-    		}
-			});	
+			dataArray = data.split(',');	
+			process.argv[2] = dataArray[0];
+			process.argv[3] = dataArray[1];
+			if(process.argv[2] == 'spotify-this-song'){
+				// Make this a function with the value of query being a parameter
+				spotify.search({ type: 'track', query: process.argv[3] }, function(err, data){
+    			if(err){
+        		console.log('Error occurred: ' + err);
+        		return;
+    			}else{
+    				// Make this a function
+    			console.log("Artist:" + JSON.stringify(data.tracks.items[0].artists[0].name,null,3));
+    			console.log("Song Name:" + JSON.stringify(data.tracks.items[0].name,null,3));
+    			console.log("Preview Link:" + JSON.stringify(data.tracks.items[0].preview_url,null,3));
+    			console.log("Album Name:" + JSON.stringify(data.tracks.items[0].album.name,null,3));
+    			}
+			});				
+			}
 		}
 		});
 	}
 // To store toAppend in log.txt
 	fs.appendFile("log.txt", toAppend, function(err){
-	if(err){
-		console.log(err);
-	}else{
-		console.log("Content Added!");
-	}
+		if(err){
+			console.log(err);
+		}else{
+			console.log("Content Added!");
+		}
 	});  
