@@ -15,7 +15,7 @@ var toAppend = command +" " + titleJoined + ",";
 		twitterClient.get('search/tweets', params, function(error, data, response){
     var tweets = data.statuses;
     for (var i = 0; i<20; i++) {
-        console.log("Tweet" + i + ":" +tweets[i].text);
+        console.log("Date:" + tweets[0].created_at+ "  " + "Tweet:" + tweets[i].text);
     }
 	});
 	}
