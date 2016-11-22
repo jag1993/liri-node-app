@@ -1,7 +1,7 @@
 var client = require('./keys');
 var twitter = require('twitter');
 var twitterClient = new twitter(client);
-var params = {q: 'inClassProject', count:20};
+var params = {q: 'josegarseeya', count:20};
 var spotify = require('spotify');
 var request = require('request');
 var fs = require('fs');
