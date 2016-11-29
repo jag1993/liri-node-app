@@ -1,5 +1,5 @@
 # liri-node-app
-## Working Link: https://github.com/jag1993/liri-node-app
+
 
 ## Liri
   >![liri gif](https://cloud.githubusercontent.com/assets/18745344/20538193/f80e9b84-b0a4-11e6-992d-a7e417557a7a.gif)
