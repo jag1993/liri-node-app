@@ -11,7 +11,7 @@
   > 4. Typing: node liri.js do-what-it-says will do whatever command is in random.txt 
   > 5. Commands are logged in log.txt
 
-## Languages and Technologies Used
+## Technologies Used
   >1. Node.js
   >2. NPM Packages: request, twitter, spotify, and fs
  
